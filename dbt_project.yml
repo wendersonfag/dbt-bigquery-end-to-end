@@ -29,19 +29,14 @@ clean-targets:         # directories to be removed by `dbt clean`
 # In this example config, we tell dbt to build all models in the example/
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
+
+seeds:
+  +schema: raw
+
+snapshots:
+  +schema: snapshots
+
 models:
-  datawarehouse:
-    # Config indicated by + and applies to all files under models/example/
-    seeds:
-      +schema: raw
-
-    snapshots:
-      +schema: snapshots
-
-    models:
-      staging:
-        +schema: staging  # Define o esquema para modelos de staging
-        +materialized: view
-    marts:
-      +schema: marts  # Define o esquema para modelos de marts
-      +materialized: table
+  staging:
+    +schema: staging  # Define o esquema para modelos de staging
+    +materialized: view
