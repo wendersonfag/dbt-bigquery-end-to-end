@@ -30,11 +30,11 @@ renamed as (
         tax_paid as tax_paid_cents,
         order_total as order_total_cents,
         -- Substituição manual do cents_to_dollars
-        round(cast((subtotal / 100) as numeric), 2) as subtotal,
+        cents_to_dollars(subtotal) AS subtotal,
         -- Substituição manual do cents_to_dollars
-        round(cast((tax_paid / 100) as numeric), 2) as tax_paid,
+        cents_to_dollars(tax_paid)  as tax_paid,
         -- Substituição manual do cents_to_dollars
-        round(cast((order_total / 100) as numeric), 2) as order_total,
+        cents_to_dollars(order_total) as order_total,
 
         ---------- timestamps
         -- Substituição manual do dbt.date_trunc

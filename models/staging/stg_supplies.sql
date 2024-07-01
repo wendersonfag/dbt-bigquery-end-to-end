@@ -24,7 +24,7 @@ renamed as (
         CONCAT(id, '-', sku) as supply_uuid,
 
         ---------- booleans
-        ROUND(CAST((cost / 100) as numeric), 2) as supply_cost
+        cents_to_dollars(cost) as supply_cost
 
     from source
 
