@@ -15,6 +15,20 @@ renamed as (
         order_id,
         sku as product_id
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     from source
 
 )

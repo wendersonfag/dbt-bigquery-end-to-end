@@ -19,6 +19,17 @@ renamed as (
         ---------- numerics
         tax_rate,
 
+
+
+
+
+
+
+
+
+
+
+
         ---------- timestamps
         -- Substituição manual do dbt.date_trunc
         DATE_TRUNC(opened_at, day) as opened_date

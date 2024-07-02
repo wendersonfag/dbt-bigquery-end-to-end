@@ -1,8 +1,6 @@
 -- models/staging/stg_orders.sql
 
-with
-
-source_2023 as (
+/*with source_2023 as (
     select * from {{ source('ecom', 'raw_orders_2023') }}
 ),
 
@@ -14,6 +12,16 @@ combined_sources as (
     select * from source_2023
     union all
     select * from source_2024
+),*/
+
+with source as (
+    --usando a macro.union_relations para combinar as tabela raw
+    {{ dbt_utils.union_relations(
+        relations=[
+            source('ecom', 'raw_orders_2023'),
+            source('ecom', 'raw_orders_2024')
+        ]
+    ) }}
 ),
 
 renamed as (
@@ -26,21 +34,30 @@ renamed as (
         customer as customer_id,
 
         ---------- numerics
+
+
+
+
+
+
+
+
+
         subtotal as subtotal_cents,
         tax_paid as tax_paid_cents,
         order_total as order_total_cents,
         -- Substituição manual do cents_to_dollars
-        cents_to_dollars(subtotal) AS subtotal,
+        {{cents_to_dollars('subtotal')}} AS subtotal,
         -- Substituição manual do cents_to_dollars
-        cents_to_dollars(tax_paid)  as tax_paid,
+        {{cents_to_dollars('tax_paid')}}  as tax_paid,
         -- Substituição manual do cents_to_dollars
-        cents_to_dollars(order_total) as order_total,
+        {{cents_to_dollars('order_total')}} as order_total,
 
         ---------- timestamps
         -- Substituição manual do dbt.date_trunc
         date_trunc(ordered_at, day) as ordered_at
 
-    from combined_sources
+    from source
 
 )
 

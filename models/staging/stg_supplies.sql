@@ -19,12 +19,24 @@ renamed as (
         ---------- text
         perishable as is_perishable_supply,
 
+
+
+
+
+
+
+
+
+
+
+
         ---------- numerics
         -- Substituição manual do cents_to_dollars
-        CONCAT(id, '-', sku) as supply_uuid,
+       -- CONCAT(id, '-', sku) as supply_uuid,
+       {{ dbt_utils.generate_surrogate_key(['id', 'sku']) }} as supply_uuid,
 
         ---------- booleans
-        cents_to_dollars(cost) as supply_cost
+        {{ cents_to_dollars('cost') }} as supply_cost
 
     from source
 
