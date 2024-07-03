@@ -14,8 +14,8 @@ combined_sources as (
     select * from source_2024
 ),*/
 
-with source as (
-    --usando a macro.union_relations para combinar as tabela raw
+WITH source AS (
+--usando a macro.union_relations para combinar as tabela raw
     {{ dbt_utils.union_relations(
         relations=[
             source('ecom', 'raw_orders_2023'),
@@ -24,14 +24,14 @@ with source as (
     ) }}
 ),
 
-renamed as (
+renamed AS (
 
-    select
+    SELECT
 
         ----------  ids
-        id as order_id,
-        store_id as location_id,
-        customer as customer_id,
+        id AS order_id,
+        store_id AS location_id,
+        customer AS customer_id,
 
         ---------- numerics
 
@@ -43,22 +43,22 @@ renamed as (
 
 
 
-        subtotal as subtotal_cents,
-        tax_paid as tax_paid_cents,
-        order_total as order_total_cents,
+        subtotal AS subtotal_cents,
+        tax_paid AS tax_paid_cents,
+        order_total AS order_total_cents,
         -- Substituição manual do cents_to_dollars
-        {{cents_to_dollars('subtotal')}} AS subtotal,
+        {{ cents_to_dollars('subtotal') }} AS subtotal,
         -- Substituição manual do cents_to_dollars
-        {{cents_to_dollars('tax_paid')}}  as tax_paid,
+        {{ cents_to_dollars('tax_paid') }}  AS tax_paid,
         -- Substituição manual do cents_to_dollars
-        {{cents_to_dollars('order_total')}} as order_total,
+        {{ cents_to_dollars('order_total') }} AS order_total,
 
         ---------- timestamps
         -- Substituição manual do dbt.date_trunc
-        date_trunc(ordered_at, day) as ordered_at
+        date_trunc(ordered_at, DAY) AS ordered_at
 
-    from source
+    FROM source
 
 )
 
-select * from renamed
+SELECT * FROM renamed
